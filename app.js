@@ -16,15 +16,15 @@ use document.getElementbyId('left/mid/right').setAttribute('src',srcArray[x])
 */
 
 // global variables
+var imageSection = document.getElementById('clickme');
 var busImageLeft = document.getElementById('left');
 var busImageMid = document.getElementById('mid');
 var busImageRight = document.getElementById('right');
-var imageSection = document.getElementById('clickme');
 
 // variables for images currently used
-var busIndexLeft;
-var busIndexMid;
-var busIndexRight;
+var busIndexLeft = 0;
+var busIndexMid = 5;
+var busIndexRight = 10;
 
 var allBusImages = [];
 var clickCounter = 0;
@@ -45,28 +45,63 @@ BusMallImage.prototype.renderImage = function (){
   busImageLeft.src = this.src;
 };
 
+/*
+Current issues:
+- do... whiles not registering similar index/random numbers
+- event handler does not stop after 25 clicks - fixed! not referencing right event handler variable.
+
+*/
+
 // Event listeners and handlers
 var imgClickHandler = function (eventObject) {
   if(event.target.id === 'left' || event.target.id === 'mid' || event.target.id === 'right') {
 
-    do {
+    do { //left image detector
       var ranLeft = Math.floor(Math.random() * allBusImages.length);
-    } while(ranLeft === busIndexLeft || ranLeft === busIndexMid || ranLeft === busIndexRight);
-
+    } while(ranLeft === busIndexLeft ||
+       ranLeft === busIndexMid ||
+        ranLeft === busIndexRight);
+    
     do {
       var ranMid = Math.floor(Math.random() * allBusImages.length);
-    } while(ranMid === busIndexLeft || ranMid === busIndexMid || ranMid === ranLeft || ranMid === busIndexRight);
-
+    } while(ranMid === busIndexLeft ||
+       ranMid === busIndexMid ||
+        ranMid === ranLeft ||
+         ranMid === busIndexRight);
+    
     do {
       var ranRight = Math.floor(Math.random() * allBusImages.length);
-    } while(ranRight === busIndexRight || ranRight === busIndexLeft || ranRight === ranMid || ranRight === ranLeft || ranRight === busIndexMid || ranRight === busIndexRight);
-    eventObject.target.src = allBusImages[ranLeft].src;
-    eventObject.target.src = allBusImages[ranMid].src;
-    eventObject.target.src = allBusImages[ranRight].src;
-    console.log(event.target.id);
+    } while(ranRight === busIndexRight ||
+       ranRight === busIndexLeft ||
+        ranRight === ranMid ||
+         ranRight === ranLeft ||
+          ranRight === busIndexMid ||
+           ranRight === busIndexRight);
+    
+    busImageLeft.src = allBusImages[ranLeft].src;
+    busImageMid.src = allBusImages[ranMid].src;
+    busImageRight.src = allBusImages[ranRight].src;
+    // console.log(event.target.id);
+    console.log('Random Left', ranLeft);
+    console.log('Random Middle', ranMid);
+    console.log('Random Right', ranRight);
+    console.log('LEFT',allBusImages[ranLeft].src);
+    console.log('mid',allBusImages[ranMid].src);
+    console.log('right',allBusImages[ranRight].src);
 
-    allBusImages[busIndexLeft].likes++;
+
+    // like incrementor
+    if (event.target.id === 'left'){
+      allBusImages[busIndexLeft].likes++;
+    } else if (event.target.id ==='middle') {
+      allBusImages[busIndexMid].likes++;
+    } else {
+      allBusImages[busIndexRight].likes++;
+    }
+
     allBusImages[busIndexLeft].instanced++;
+    allBusImages[busIndexMid].instanced++;
+    allBusImages[busIndexRight].instanced++;
 
     busImageLeft.dataset.index = ranLeft;
     busImageMid.dataset.index = ranMid;
@@ -76,7 +111,16 @@ var imgClickHandler = function (eventObject) {
     busIndexMid = ranMid;
     busIndexRight = ranRight;
 
+
   }
+  //this part should count up total number of clicks and turn off event handler once 25 are reached. will also call vote list or chart later on.
+  clickCounter++;
+  if (clickCounter === 25) {
+    busImageLeft.removeEventListener('click',imgClickHandler);
+    busImageMid.removeEventListener('click',imgClickHandler);
+    busImageRight.removeEventListener('click',imgClickHandler);
+  }
+  console.log(clickCounter, (clickCounter >= 25), 'true?');
 };
 
 busImageLeft.addEventListener('click', imgClickHandler);
@@ -104,3 +148,12 @@ new BusMallImage('./img/usb.gif', 'USB Tentacle');
 new BusMallImage('./img/water-can.jpg', 'Self-Watering Can');
 new BusMallImage('./img/wine-glass.jpg', 'Snifter Wine Glass');
 // add laptop steering wheel and sugar-free haribo gummy bears
+
+//=========
+// Charts
+//=========
+
+var renderChart = function () {
+  var imageNames = [];
+  var imageLikes = []
+}
