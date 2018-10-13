@@ -20,9 +20,12 @@ var busImageLeft = document.getElementById('left');
 var busImageMid = document.getElementById('mid');
 var busImageRight = document.getElementById('right');
 var imageSection = document.getElementById('clickme');
-var busImageLeftArrayIndex = 0;
-var busImageMidArrayIndex = 0;
-var busImageRightArrayIndex = 0;
+
+// variables for images currently used
+var busIndexLeft;
+var busIndexMid;
+var busIndexRight;
+
 var allBusImages = [];
 var clickCounter = 0;
 
@@ -34,11 +37,10 @@ var BusMallImage = function(src, name){
   this.name = name;
   this.instanced = 0;
 
-  allBusImages.push(this);  
+  allBusImages.push(this);
 };
 
 // Prototypes
-
 BusMallImage.prototype.renderImage = function (){
   busImageLeft.src = this.src;
 };
@@ -48,31 +50,38 @@ var imgClickHandler = function (eventObject) {
   if(event.target.id === 'left' || event.target.id === 'mid' || event.target.id === 'right') {
 
     do {
-      var randomNumberLeft = Math.floor(Math.random() * allBusImages.length);
-    } while(randomNumberLeft === busImageLeftArrayIndex);
+      var ranLeft = Math.floor(Math.random() * allBusImages.length);
+    } while(ranLeft === busIndexLeft || ranLeft === busIndexMid || ranLeft === busIndexRight);
 
     do {
-      var randomNumberMid = Math.floor(Math.random() * allBusImages.length);
-    } while(randomNumberMid === busImageMidArrayIndex);
+      var ranMid = Math.floor(Math.random() * allBusImages.length);
+    } while(ranMid === busIndexLeft || ranMid === busIndexMid || ranMid === ranLeft || ranMid === busIndexRight);
 
     do {
-      var randomNumberRight = Math.floor(Math.random() * allBusImages.length);
-    } while(randomNumberRight === busImageRightArrayIndex);
+      var ranRight = Math.floor(Math.random() * allBusImages.length);
+    } while(ranRight === busIndexRight || ranRight === busIndexLeft || ranRight === ranMid || ranRight === ranLeft || ranRight === busIndexMid || ranRight === busIndexRight);
+    eventObject.target.src = allBusImages[ranLeft].src;
+    eventObject.target.src = allBusImages[ranMid].src;
+    eventObject.target.src = allBusImages[ranRight].src;
+    console.log(event.target.id);
 
-    allBusImages[busImageLeftArrayIndex].likes++;
-    allBusImages[busImageLeftArrayIndex].instanced++;
+    allBusImages[busIndexLeft].likes++;
+    allBusImages[busIndexLeft].instanced++;
 
-    busImageLeftArrayIndex = randomNumberLeft;
-    busImageMidArrayIndex = randomNumberMid;
-    busImageRightArrayIndex = randomNumberRight;
-    
-    eventObject.target.src = allBusImages[randomNumberLeft].src;
-    eventObject.target.src = allBusImages[randomNumberMid].src;
-    eventObject.target.src = allBusImages[randomNumberRight].src;
+    busImageLeft.dataset.index = ranLeft;
+    busImageMid.dataset.index = ranMid;
+    busImageRight.dataset.index = ranRight;
+
+    busIndexLeft = ranLeft;
+    busIndexMid = ranMid;
+    busIndexRight = ranRight;
+
   }
 };
 
 busImageLeft.addEventListener('click', imgClickHandler);
+busImageMid.addEventListener('click', imgClickHandler);
+busImageRight.addEventListener('click', imgClickHandler);
 
 // constructed img-objects go here
 new BusMallImage('./img/bag.jpg', 'Artoo Luggage');
