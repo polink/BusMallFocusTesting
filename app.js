@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 
 BusMall Focus Testing!
 
@@ -30,7 +30,7 @@ var allBusImages = [];
 var clickCounter = 0;
 
 //chart variable
-var ctx = document.getElementById("myChart").getContext('2d');
+var ctx = document.getElementById('myChart').getContext('2d');
 console.log(ctx);
 
 // Constructor for Bus Mall Images
@@ -163,7 +163,7 @@ var renderChart = function () {
   for (var i in allBusImages) {
     imageNames.push(allBusImages[i].name);
     imageLikes.push(allBusImages[i].likes);
-    colors.push('red');
+    colors.push('orange');
   }
   console.log(imageLikes);
 
