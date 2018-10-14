@@ -1,3 +1,11 @@
+* {
+  font-family: sans-serif;
+}
+
 img {
   height: 400px;
+}
+
+nav li {
+  display: inline-block;
 }
