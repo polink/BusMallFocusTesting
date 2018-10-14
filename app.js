@@ -78,8 +78,7 @@ var imgClickHandler = function (eventObject) {
        ranRight === busIndexLeft ||
         ranRight === ranMid ||
          ranRight === ranLeft ||
-          ranRight === busIndexMid ||
-           ranRight === busIndexRight);
+          ranRight === busIndexMid);
     
     busImageLeft.src = allBusImages[ranLeft].src;
     busImageMid.src = allBusImages[ranMid].src;
