@@ -29,6 +29,9 @@ var busIndexRight = 10;
 var allBusImages = [];
 var clickCounter = 0;
 
+//chart variable
+var ctx = document.getElementById("myChart").getContext('2d');
+console.log(ctx);
 
 // Constructor for Bus Mall Images
 var BusMallImage = function(src, name){
@@ -119,6 +122,7 @@ var imgClickHandler = function (eventObject) {
     busImageLeft.removeEventListener('click',imgClickHandler);
     busImageMid.removeEventListener('click',imgClickHandler);
     busImageRight.removeEventListener('click',imgClickHandler);
+    renderChart();
   }
   console.log(clickCounter, (clickCounter >= 25), 'true?');
 };
@@ -147,7 +151,7 @@ new BusMallImage('./img/unicorn.jpg', 'Can o\' Unicorn Meats');
 new BusMallImage('./img/usb.gif', 'USB Tentacle');
 new BusMallImage('./img/water-can.jpg', 'Self-Watering Can');
 new BusMallImage('./img/wine-glass.jpg', 'Snifter Wine Glass');
-// add laptop steering wheel and sugar-free haribo gummy bears
+// STRETCH: add laptop steering wheel and sugar-free haribo gummy bears
 
 //=========
 // Charts
@@ -155,5 +159,54 @@ new BusMallImage('./img/wine-glass.jpg', 'Snifter Wine Glass');
 
 var renderChart = function () {
   var imageNames = [];
-  var imageLikes = []
-}
+  var imageLikes = [];
+  var colors = [];
+  for (var i in allBusImages) {
+    imageNames.push(allBusImages[i].name);
+    imageLikes.push(allBusImages[i].likes);
+    colors.push('red');
+  }
+  console.log(imageLikes);
+
+  var chartData = {
+    labels: imageNames, // #Labels for individual rows of data
+    datasets: [{ //takes in more than one set of data
+      label: '# of Votes', // #Need to label your chart
+      data: imageLikes, //#array of values
+      backgroundColor: colors,
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  var chartOptions = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    },
+    animation: {
+      duration: 800,
+      easing: 'easeInCirc',
+    },
+    responsive: true,
+  };
+
+  var barChart = {
+    type: 'horizontalBar', //refers to the type of chart
+    data: chartData, // #insert actual array of chart Data
+    options: chartOptions, // insert the default options
+  };
+
+  //render the chart
+  var myChart = new Chart(ctx, barChart);
+};
