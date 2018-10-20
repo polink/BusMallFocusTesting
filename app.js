@@ -34,7 +34,7 @@ var ctx = document.getElementById('myChart').getContext('2d');
 console.log(ctx);
 
 // Constructor for Bus Mall Images
-var BusMallImage = function(src, name){
+var BusMallImage = function(src, name){ 
   this.likes = 0;
   this.src = src;
   this.name = name;
@@ -43,7 +43,7 @@ var BusMallImage = function(src, name){
   allBusImages.push(this);
 };
 
-// Prototypes
+// Prototypes - doesn't actually get used!
 BusMallImage.prototype.renderImage = function (){
   busImageLeft.src = this.src;
 };
@@ -71,7 +71,7 @@ var imgClickHandler = function (eventObject) {
        ranMid === busIndexMid ||
         ranMid === ranLeft ||
          ranMid === busIndexRight);
-    
+
     do {
       var ranRight = Math.floor(Math.random() * allBusImages.length);
     } while(ranRight === busIndexRight ||
@@ -79,7 +79,7 @@ var imgClickHandler = function (eventObject) {
         ranRight === ranMid ||
          ranRight === ranLeft ||
           ranRight === busIndexMid);
-    
+
     busImageLeft.src = allBusImages[ranLeft].src;
     busImageMid.src = allBusImages[ranMid].src;
     busImageRight.src = allBusImages[ranRight].src;
@@ -115,6 +115,10 @@ var imgClickHandler = function (eventObject) {
 
 
   }
+
+  //function calls and incrementors
+  //saves to local storage on click
+  storeToLocalStorage();
   //this part should count up total number of clicks and turn off event handler once 25 are reached. will also call vote list or chart later on.
   clickCounter++;
   if (clickCounter === 25) {
@@ -151,6 +155,40 @@ new BusMallImage('./img/usb.gif', 'USB Tentacle');
 new BusMallImage('./img/water-can.jpg', 'Self-Watering Can');
 new BusMallImage('./img/wine-glass.jpg', 'Snifter Wine Glass');
 // STRETCH: add laptop steering wheel and sugar-free haribo gummy bears
+new BusMallImage('./img/haribosugarfreebears.jpg', '5 lbs Sugar-Free Gummy Bears');
+new BusMallImage('./img/laptopsteeringdesk.jpg', 'Laptop Steering Wheel Desk');
+
+//gets local storage data if there is nothing in local storage ('products')
+var busNum = JSON.parse(localStorage.getItem('products'));
+
+if (!localStorage.getItem('products')){
+  new BusMallImage('./img/bag.jpg', 'Artoo Luggage');
+  new BusMallImage('./img/banana.jpg', 'Nana Slicer');
+  new BusMallImage('./img/bathroom.jpg', 'Bathroom iPad Stand');
+  new BusMallImage('./img/boots.jpg', 'Toeless Boots');
+  new BusMallImage('./img/breakfast.jpg', 'Toaster Oven & Coffee Pot');
+  new BusMallImage('./img/bubblegum.jpg', 'Meatball Gum');
+  new BusMallImage('./img/chair.jpg', 'Artisinal Chair');
+  new BusMallImage('./img/cthulhu.jpg', 'Cthulhu Action Figure');
+  new BusMallImage('./img/dragon.jpg', 'Can o\' Dragon Meats');
+  new BusMallImage('./img/pen.jpg', 'Pencap Cutlery');
+  new BusMallImage('./img/pet-sweep.jpg', 'PetBroom');
+  new BusMallImage('./img/scissors.jpg', 'Pisa Scissors');
+  new BusMallImage('./img/shark.jpg', 'Shark Sleeping Bag');
+  new BusMallImage('./img/sweep.png', 'Kid Sweeper');
+  new BusMallImage('./img/tauntaun.jpg', 'Tauntaun Sleeping Bag');
+  new BusMallImage('./img/unicorn.jpg', 'Can o\' Unicorn Meats');
+  new BusMallImage('./img/usb.gif', 'USB Tentacle');
+  new BusMallImage('./img/water-can.jpg', 'Self-Watering Can');
+  new BusMallImage('./img/wine-glass.jpg', 'Snifter Wine Glass');
+  new BusMallImage('./img/haribosugarfreebears.jpg', '5 lbs Sugar-Free Gummy Bears');
+  new BusMallImage('./img/laptopsteeringdesk.jpg', 'Laptop Steering Wheel Desk');
+} else {
+  allBusImages = JSON.parse(localStorage.getItem('products'));
+}
+
+//   storeToLocalStorage();
+
 
 //=========
 // Charts
@@ -208,4 +246,13 @@ var renderChart = function () {
 
   //render the chart
   var myChart = new Chart(ctx, barChart);
+};
+// myChart.style.width='600px'; (figure out what gets the chart style property to change the width)
+
+
+//stores data to local storage
+// does not currently have a way to take likes data and convert to local storage
+// possibly may have to do a iterator through busMall array?
+var storeToLocalStorage = function() {
+  localStorage.setItem('products', JSON.stringify(allBusImages));
 };
