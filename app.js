@@ -187,8 +187,6 @@ if (!localStorage.getItem('products')){
   allBusImages = JSON.parse(localStorage.getItem('products'));
 }
 
-//   storeToLocalStorage();
-
 
 //=========
 // Charts
